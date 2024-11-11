@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventures in Birdwatching</title>
+    <link rel="stylesheet" href="css/bird.css">
+</head>
+<body>
+    <header>
+        <h1>
+            Birdwatching is fun. Here are some cool birds I've seen.
+        </h1>
+    </header>
+
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="images/finch and chickadee.jpg" onclick="openModal(this)">
+            <div class="caption">On the left is a house finch, and on the right is a Carolina chickadee.</div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/carolina wren.jpg" onclick="openModal(this)">
+            <div class="caption">The fence became a common spot for birds to perch, like this Carolina wren.
+                It stood there for some time, singing its distinct song.
+            </div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/carolina chickadee.jpg" onclick="openModal(this)">
+            <div class="caption">Another Carolina chickadee. They're not very big, so they often don't eat
+                on the birdfeeder, being scared away by larger birds.
+            </div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/northern mockingbird.jpg" onclick="openModal(this)">
+            <div class="caption">This is a northern mockingbird, perched atop the fence. I saw this pretty early on, but haven't seen
+                many since.
+            </div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/northern cardinal.jpg" onclick="openModal(this)">
+            <div class="caption">The northern cardinals are pretty funny around the birdfeeder. I've only seen one perch on it once,
+                they much prefer to scavange for the bits of birdseed that have fallen on the floor below it.
+            </div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/tufted titmouse.jpg" onclick="openModal(this)">
+            <div class="caption">I've seen no bird more than the tufted titmouse, a favorite of my great-grandfather. This is a photo
+                from a new window feeder I bought. I've loved getting a closer look at them through it.
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullImage">
+        <div id="modalCaption"></div>
+    </div>
+
+    <script src="javascripts/modal.js"></script>
+</body>
+</html>
