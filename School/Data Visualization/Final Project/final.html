@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Final Project</title>
+        <link rel="stylesheet" href="css/style.css">
+        <style>
+            /* Slideshow styles */
+            .slideshow-container {
+                position: relative;
+                max-width: 70%;
+                margin: auto;
+            }
+    
+            .mySlides {
+                display: none;
+            }
+    
+            .prev, .next {
+                position: absolute;
+                top: 50%;
+                padding: 16px;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                font-size: 18px;
+                border: none;
+                cursor: pointer;
+                user-select: none;
+            }
+    
+            .next {
+                right: 0;
+            }
+    
+            .text {
+                text-align: center;
+                font-size: 20px;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                padding: 8px;
+            }
+        
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+			<h1>Is home-field advantage an actual advantage? </h1>
+		</header>
+        <br>
+			<p>
+				Welcome to Jack Phillips, Duncan McDermott, and Reed Interdonato's final project for our Fall 2024 Data Visualization
+                class. 
+			</p>
+            <h2>
+                Our project goal
+            </h2>
+            <p>The goal of this project was to look into whether a "home-field advantage" is an actual relevant advantage in
+                professional sports. Where a professional sports game is played is often given a lot of attention. In college football,
+                intra-conference away games for a superior opponent are often called "trap-games", as in what should be an easy win
+                could instead be a trap. In the NFL, teams playing out of cold cities, like the Buffalo Bills and Minnesota Vikings, 
+                are often said to have a greater home-field advantage during winter games. Most significantly, in almost every single
+                professional sports league playoff system, the team with the better record and better seeding in said playoffs is often
+                given home-field advantage. Our project aimed to explore whether home teams often won more than away teams.
+            </p>
+            <h2>
+                Our data
+            </h2>
+            <p>Most of our data was sourced from <a href="https://www.sports-reference.com/">SportsReference</a>, 
+            a website that keeps swaths of data across all the major sports leagues in North America. Using the BeautifulSoup
+            and Requests libraries in Python, we scraped the website for game logs from the MLB, NHL, NFL, and NBA's past two seasons.
+            We processed the data in order to find each teams win percentage.
+            </p>
+            <h2>
+                First steps
+            </h2>
+            <p>We started our project by looking at the MLB's most recent season and graphing home win percentage and average fan 
+                attendace, the thought being more fans would mean more support and a greater advantage. While it wouldn't directly 
+                answer our question, it was an interesting angle we wanted to explore. 
+            </p>
+            <figure>
+                <img src="images/blob.jpg">
+            </figure>
+            <p>While our first graph we thought might show a slight correlation between how full a stadium was and winning
+                percentage, we thought the relationship might be reversed, as it would make sense that more fans would come
+                out to games if the team was doing well, and vice versa. To combat that, instead of looking at home win percentage
+                we looked at the difference between home and away win percentage. We did this for both the 2024 and 2023 MLB seasons.
+            </p>
+            <div class="slideshow-container" id="slideshow1">
+                <div class="mySlides fade">
+                    <img src="images/home win pct.jpg" alt="MLB chart" style="width:100%">
+                </div>
+                <div class="mySlides fade">
+                    <img src="images/2023mlb.jpg" alt="Home win percentage" style="width:100%">
+                </div>
+                <a class="prev" onclick="changeSlide(-1, 0)">&#10094;</a>
+                <a class="next" onclick="changeSlide(1, 0)">&#10095;</a>
+            </div>
+            <p>From there, we saw there was hardly any correlation between the two variables, and decided to pursue other efforts.</p>
+            <h2>
+                An interesting trend
+            </h2>
+            <p>While looking at fan attendance proved fruitless, our group noticed an interesting wrinkle when looking at the
+                difference between home and away winning percentage. The Colorado Rockies, Denver Nuggets, and Utah Jazz all
+                consistently posted higher winning percentages at home. Denver is known as the Mile-High City, and for good reason,
+                it stands at an elevation of 5,489 feet above sea level (which is actually higher than a mile). Salt Lake City,
+                home of the Jazz, has an elevation of 4,226 feet. While Denver towers over Salt Lake City, both stand thousands of
+                feet taller than every other city that hosts a major sports franchise. The next tallest, Oklahoma City, doesn't crack
+                1,300 feet.
+                <br><br>
+                So, is there any correlation between a team performing better at home than on the road and elevation?
+            </p>
+            <div class="slideshow-container" id="slideshow2">
+                <div class="mySlides fade">
+                    <img src="images/2024nbaelev.jpg" alt="NBA elevation chart" style="width:100%">
+                </div>
+                <div class="mySlides fade">
+                    <img src="images/2024nhlelev.jpg" alt="2024 NHL elevation chart" style="width:100%">
+                </div>
+                <div class="mySlides fade">
+                    <img src="images/2023nhlelev.jpg" alt="2023 NHL elevation chart" style="width:100%">
+                </div>
+                <a class="prev" onclick="changeSlide(-1, 1)">&#10094;</a>
+                <a class="next" onclick="changeSlide(1, 1)">&#10095;</a>
+            </div>
+
+            <p>Again, it was pretty inconclusive. The Rockies and Nuggets certainly looked better at home, however teams like
+                the NHL's Colorado Avalanche, one of the best teams in the league during that span, were about just as good on the 
+                road. While we can't take anything significant away from this, just looking at two seasons 
+                is admittedly a small sample size. Therefore, we looked at the high elevation teams in the four major leagues, and
+                compared them to the all-time great franchises of each. The Los Angeles Lakers, Dallas Cowboys, etc. We looked at
+                four teams from each league, and subtracted their road win percentage from their home win percentage. We then looked
+                at the league average difference between home and away win percentage, courtesy of the 
+                <a href="https://www.chicagobooth.edu/review/home-field-advantage-facts-and-fiction">Chicago Booth Review</a>, and subtracted
+                the league average difference from each team's difference.
+                <figure>
+                    <iframe src="html/homewinagainstleague.html" width=900px height=625px frameborder="0"></iframe>
+                </figure>
+                In this graph we can finally see something of statistical significance. The "control" teams all seem to hover around zero. 
+                That is, they don't differ much from the league average. The only team that appears to do so to any extent are the 
+                Green Bay Packers, a team notorious for being difficult to play against in the cold. However, our high elevation teams
+                seem to perform better than league average...in 3 out of the 4 leagues at least. Interestingly enough, the NHL's high
+                elevation teams seem to actually perform worse at home than league average. Aside from them, Denver's Broncos, Rockies
+                and Nuggets, and Salt Lake City's Jazz, all seem to play better at home than their league average.
+            </p>
+	    </div>
+
+        <h2>
+            Tying it all together
+        </h2>
+        <p>
+            Despite not many significant results in our research so far, one thing is clear: home-field advantage IS a thing. In the
+            NBA, only 6 teams performed better on the road in 2024, and only 3 teams did in 2023. In the NHL, only 3 performed
+            better on the road in 2024 and 10 in 2023. In the NFL and MLB, more of the same. In all four leagues, more teams than
+            not perform better at home. So where does that take us?
+        </p>
+        <div class="slideshow-container" id="slideshow3">
+            <div class="mySlides fade">
+                <img src="images/2024nba.jpg" alt="2024 nba" style="width:100%">
+            </div>
+            <div class="mySlides fade">
+                <img src="images/2023nba.jpg" alt="2023 nba" style="width:100%">
+            </div>
+            <div class="mySlides fade">
+                <img src="images/2024nhl.jpg" alt="2024 NHL" style="width:100%">
+            </div>
+            <div class="mySlides fade">
+                <img src="images/2023nhl.jpg" alt="2023 nhl" style="width:100%">
+            </div>
+            <div class="mySlides fade">
+                <img src="images/2023nfl.jpg" alt="2023 nfl" style="width:100%">
+            </div>
+            <div class="mySlides fade">
+                <img src="images/2022nfl.jpg" alt="2022 Nfl" style="width:100%">
+            </div>
+            <a class="prev" onclick="changeSlide(-1, 2)">&#10094;</a>
+            <a class="next" onclick="changeSlide(1, 2)">&#10095;</a>
+        </div>
+
+        <h2>Future research</h2>
+        <p>
+            There are many different angles we could take going forward. Like mentioned previously, in outdoor settings, such as the 
+            NFL and MLB, do teams get acclimated to playing in cold weather, giving them an advantage when warm-weather teams visit?
+            When first talking about the elevation angle, one idea that came up was a choropleth map that could show whether
+            cities/states had a higher home-field advantage than others. Another way to do implement that would be to see if certain
+            teams perform better in certain environments. Do the Miami Dolphins play better when they visit Dallas, or Green Bay,
+            for example?
+            <br><br>
+            Another angle we really wanted to pursue was the playoffs. The regular season is solely designed to determine seeding
+            and home-field advantage for the playoffs, so how important is said seeding? Do home teams seem to play better because
+            they were the better team in the regular season, or does playing more of the games at home really give them an 
+            advantage? While we wanted to pursue it, the data just wasn't available like it was for the regular season. It would
+            have taken a lot more manual effort, and we were more interested in testing our methods rather than continuously data 
+            scraping and processing.
+            <br><br>
+            One of the last, but most interesting areas we looked into were game-specific stats in home versus away games. In hockey
+            or basketball, this could be shooting percentage, in baseball it could be strikeouts or walk rate, or in the case we
+            explored, football, it could be yards from scrimmage. In the 2023 and 2022 seasons, there was a clear dilineation 
+            between rushing yards, passing yards, and total yards between home and away teams, which we visualized through a
+            <a href="https://public.tableau.com/app/profile/duncan.mcdermott/viz/final_project_17340408431590/NFLDashboardYardsWins">Tableau dashboard</a>.
+            <br><br>
+            With the abundance of statistics and advanced analytics in sports nowadays, there are a multitude of different way we could
+            find differences in home-field advantage, and we were happy to explore just a few of them.
+        </p>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+            const slideIndices = []; // Array to track the current slide index for each slideshow
+            const slideshows = document.querySelectorAll(".slideshow-container");
+
+            // Initialize each slideshow
+            slideshows.forEach((slideshow, index) => {
+                slideIndices[index] = 0; // Start each slideshow at the first slide
+                showSlides(index); // Display the first slide for this slideshow
+            });
+
+            // Function to change the slide for a specific slideshow
+            window.changeSlide = (n, slideshowIndex) => {
+                slideIndices[slideshowIndex] += n;
+                showSlides(slideshowIndex);
+            };
+
+            // Function to display slides for a specific slideshow
+            function showSlides(slideshowIndex) {
+                const slideshow = slideshows[slideshowIndex];
+                const slides = slideshow.querySelectorAll(".mySlides");
+
+                // Wrap around slide index if out of bounds
+                if (slideIndices[slideshowIndex] >= slides.length) {
+                    slideIndices[slideshowIndex] = 0;
+                }
+                if (slideIndices[slideshowIndex] < 0) {
+                    slideIndices[slideshowIndex] = slides.length - 1;
+                }
+
+                // Hide all slides and show only the current one
+                slides.forEach((slide, i) => {
+                    slide.style.display = i === slideIndices[slideshowIndex] ? "block" : "none";
+                });
+            }
+        });
+
+        </script>
+    </body>
+</html>
