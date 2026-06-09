@@ -1,13 +1,911 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Main page</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack Phillips | Data Science & Wildlife Photography</title>
+    <meta name="description" content="The portfolio of Jack Phillips. Data Scientist and Wildlife Photographer. Focused on the intersection of complex systems and the natural world.">
+    
+    <!-- Typography: Inter for UI, Playfair for Editorial -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
-    <body>
-        <h1> <a href="School/Data Visualization/Microbiome.html">Go to Microbiome</a></h1>
-        <h1> <a href="School/Data Visualization/Assignment 12/Assignment12.html">Or maybe you're here for Assignment 12...</a></h1>
-        <h1> <a href="Personal/Birdwatching/birdwatching.html">Here are some photos of birds I took</a></h1>
-        <h1> <a href="School/Data Visualization/Final Project/final.html">Direct link to final project</a></h1>
-    </body>
+    <style>
+        :root {
+            --bg-color: #060606;
+            --surface-color: #0d0d0d;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent: #d2d2d7;
+            --glass: rgba(15, 15, 15, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --blur: saturate(180%) blur(20px);
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+        }
+
+        body {
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            overflow-x: hidden;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, .editorial {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        /* --- Layout & Utilities --- */
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        .section-spacer {
+            padding: 20vh 0;
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Navigation --- */
+
+        nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 0.75rem 2rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            transition: all 0.6s var(--ease-out);
+        }
+
+        nav.scrolled {
+            top: 1rem;
+            padding: 0.6rem 2.5rem;
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s var(--ease);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* --- Hero --- */
+
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-visual {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 110%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.5);
+            transform: scale(1.1);
+            transition: transform 0.1s linear;
+            will-change: transform;
+        }
+
+        .hero-content {
+            z-index: 1;
+        }
+
+        .hero-pre {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: block;
+            opacity: 0;
+            animation: fadeInDown 1.5s var(--ease-out) forwards;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1.8s var(--ease-out) 0.3s forwards;
+        }
+
+        .hero-desc {
+            font-size: clamp(1rem, 1.5vw, 1.4rem);
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1.8s var(--ease-out) 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Hero Metadata --- */
+        .hero-metadata {
+            position: absolute;
+            bottom: 3rem;
+            left: 0;
+            width: 100%;
+            padding: 0 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* --- Hero Metadata Style --- */
+        .hero-metadata .meta-species, 
+        .hero-metadata .meta-location {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-weight: 500;
+            color: var(--text-primary);
+            opacity: 0.8;
+            transition: opacity 1.5s var(--ease-in-out); /* Synced with hero image */
+        }
+
+        .hero-metadata.fade-out .meta-species,
+        .hero-metadata.fade-out .meta-location {
+            opacity: 0;
+        }
+
+        .hero-image {
+            transition: opacity 1.5s var(--ease-in-out), transform 0.1s linear;
+        }
+
+        .hero-image.fade-out {
+            opacity: 0;
+        }
+
+        /* --- Photography Showcase --- */
+
+        .section-header {
+            margin-bottom: 10vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title-large {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1;
+        }
+
+        .photography-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+
+        .photo-card {
+            grid-column: span 4;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--surface-color);
+            transition: transform 1.2s var(--ease-out);
+        }
+
+        .photo-card.wide { grid-column: span 8; }
+        .photo-card.tall { grid-row: span 2; height: 100%; }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s var(--ease-out);
+            display: block;
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .photo-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s var(--ease-out);
+        }
+
+        .photo-card:hover .photo-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .photo-card, .photo-card.wide { grid-column: span 12; }
+        }
+
+        /* --- Featured Project --- */
+
+        .featured-project {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .featured-visual {
+            grid-column: span 7;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
+
+        .featured-visual img {
+            width: 100%;
+            display: block;
+            transition: transform 2s var(--ease-out);
+        }
+
+        .featured-project:hover .featured-visual img {
+            transform: scale(1.03);
+        }
+
+        .featured-body {
+            grid-column: span 5;
+        }
+
+        .featured-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .featured-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .btn-luxury {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.4s var(--ease);
+        }
+
+        .btn-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--text-primary);
+            z-index: -1;
+            transition: width 0.4s var(--ease);
+        }
+
+        /* Standard Hover: Black text on White fill */
+        .btn-luxury:hover {
+            color: #000;
+        }
+
+        .btn-luxury:hover::before {
+            width: 100%;
+        }
+
+        /* Inverted Luxury Button (White to Black fill) */
+        .btn-luxury-inverted {
+            background: var(--text-primary);
+            color: #000;
+            border: 1px solid var(--text-primary);
+        }
+
+        .btn-luxury-inverted::before {
+            background: #000;
+        }
+
+        /* Inverted Hover: White text on Black fill */
+        .btn-luxury-inverted:hover {
+            color: #fff;
+        }
+
+        /* --- Nerd Cards: Redesigned for Premium Aesthetic --- */
+        .nerd-card {
+            display: block;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--glass-border);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.6s var(--ease-out);
+            position: relative;
+        }
+
+        .nerd-card:first-child {
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .nerd-card:hover {
+            padding-left: 2rem;
+            border-bottom-color: var(--text-primary);
+        }
+
+        .nerd-card-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nerd-card .arrow {
+            font-size: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 200;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s var(--ease-out);
+        }
+
+        .nerd-card:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .nerd-card .chips-container {
+            justify-content: flex-start;
+            gap: 1.5rem;
+            opacity: 0.6;
+            transition: opacity 0.6s var(--ease);
+        }
+
+        .nerd-card:hover .chips-container {
+            opacity: 1;
+        }
+
+        .nerd-card .tag {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 1000px) {
+            .featured-visual, .featured-body { grid-column: span 12; }
+            .featured-body { order: 1; }
+            .featured-visual { order: 2; }
+        }
+
+        /* --- Bird Nerd Section --- */
+        .bird-nerd-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 5vw;
+            padding: 15vh 0;
+            background: #000;
+            position: relative;
+        }
+
+        .bird-nerd-visual {
+            position: relative;
+            height: 80vh;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        .bird-nerd-visual::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent 50%, #000 100%);
+            z-index: 1;
+        }
+
+        .bird-nerd-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.7) contrast(1.1) saturate(1.1) sepia(0.2);
+            display: block;
+        }
+
+        .bird-nerd-content {
+            padding-right: 5vw;
+            z-index: 2;
+        }
+
+        .bird-nerd-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .bird-nerd-subtitle {
+            font-size: clamp(1rem, 2vw, 1.8rem);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .bird-nerd-actions {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 900px) {
+            .bird-nerd-section {
+                grid-template-columns: 1fr;
+                padding: 10vh 0;
+            }
+            .bird-nerd-visual {
+                height: 50vh;
+                order: 2;
+            }
+            .bird-nerd-content {
+                order: 1;
+                padding-right: 0;
+                text-align: center;
+            }
+            .bird-nerd-actions {
+                justify-content: center;
+            }
+        }
+
+        /* --- Projects Grid --- */
+
+        .projects-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 5vh 3vw;
+        }
+
+        .project-item {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-thumb {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            background: var(--surface-color);
+        }
+
+        .project-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s var(--ease-out);
+        }
+
+        .project-item:hover .project-thumb img {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        .project-name {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .projects-layout { grid-template-columns: 1fr; }
+        }
+
+        /* --- About & Identity --- */
+
+        #about {
+            background: #000;
+        }
+
+        .about-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-statement {
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            line-height: 1.4;
+            margin-bottom: 5rem;
+            text-align: center;
+        }
+
+        .about-statement span {
+            color: var(--text-secondary);
+            transition: color 0.6s var(--ease);
+        }
+
+        .about-statement span:hover {
+            color: var(--text-primary);
+        }
+
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .chip {
+            padding: 0.8rem 2rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s var(--ease);
+        }
+
+        .chip:hover {
+            background: var(--text-primary);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        /* --- Footer --- */
+
+        footer {
+            padding: 8vh 0;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .copyright {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        /* --- Scroll Progress --- */
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--text-primary);
+            z-index: 1001;
+            transition: width 0.1s linear;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <nav class="glass">
+        <div class="nav-links">
+            <a href="#hero">Intro</a>
+            <a href="#bird-nerd">Birding</a>
+            <a href="#nerd-nerd">Tech</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-visual">
+            <img src="Personal/Birdwatching/best_shots/Edith_ReadIMG_4781.JPG" alt="Hero Bird" class="hero-image" id="parallax-bg">
+        </div>
+        <div class="hero-content">
+            <span class="hero-pre">The Portfolio of</span>
+            <h1 class="hero-title">Jack Phillips</h1>
+        </div>
+        
+        <div class="hero-metadata" id="hero-meta-container">
+            <div class="meta-species" id="hero-species">Black-crowned Night Heron</div>
+            <div class="meta-location" id="hero-location">Rye, New York</div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse"><div class="wheel"></div></div>
+        </div>
+    </section>
+
+    <section id="bird-nerd" class="bird-nerd-section">
+        <div class="bird-nerd-visual reveal">
+            <img src="assets/images/me_birding.png" alt="Jack Phillips Birding">
+        </div>
+        <div class="bird-nerd-content reveal">
+            <h2 class="bird-nerd-title">Certified Bird Nerd</h2>
+            <p class="bird-nerd-subtitle">Amateur Wildlife Photographer</p>
+            <div class="bird-nerd-actions">
+                <a href="https://ebird.org/profile/NjY2MTc5OQ/world" target="_blank" class="btn-luxury btn-luxury-inverted">eBird Profile &rarr;</a>
+                <a href="Personal/Birdwatching/birdwatching.html" class="btn-luxury">View Gallery &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="nerd-nerd" class="bird-nerd-section" style="background: var(--surface-color);">
+        <div class="bird-nerd-content reveal" style="padding-left: 5vw; padding-right: 0;">
+            <h2 class="bird-nerd-title">Certified <i>Nerd</i> Nerd</h2>
+            <p class="bird-nerd-subtitle" style="margin-bottom: 3.5rem;">Software Engineer & Data Scientist</p>
+            
+            <div style="max-width: 650px;">
+                <a href="https://jackwardphillips.github.io/cfb-dynasty-tracker/" target="_blank" class="nerd-card">
+                    <div class="nerd-card-title">
+                        CFB Dynasty Tracker
+                        <span class="arrow">&rarr;</span>
+                    </div>
+                    <div class="chips-container">
+                        <span class="tag">HTML</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Postgres</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/jackwardphillips/twitcher" target="_blank" class="nerd-card">
+                    <div class="nerd-card-title">
+                        Twitcher
+                        <span class="arrow">&rarr;</span>
+                    </div>
+                    <div class="chips-container">
+                        <span class="tag">React</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Postgres</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="bird-nerd-visual reveal">
+            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200" alt="Software Engineering" style="filter: brightness(0.6) contrast(1.2) saturate(0.5);">
+        </div>
+    </section>
+
+    <footer>
+        <span class="footer-logo editorial">Jack Phillips</span>
+    </footer>
+
+    <script>
+        // --- Hero Carousel Data ---
+        const heroImages = [
+            { src: 'Personal/Birdwatching/best_shots/Edith_ReadIMG_4781.JPG', species: 'Black-crowned Night Heron', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/EdithRead_IMG_4769.JPG', species: 'Great Blue Heron', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/EdithRead_IMG_4815.JPG', species: 'Osprey', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/IMG_4046.JPG', species: 'Little Egret', location: 'Christ Church, Barbados' },
+            { src: 'Personal/Birdwatching/best_shots/IMG_5794.JPG', species: 'Northern Mockingbird', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/IMG_6994.JPG', species: 'Dark-eyed Junco', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/IMG_7373.JPG', species: 'Red-tailed Hawk', location: 'Rye, New York', objectPosition: 'center 20%' },
+            { src: 'Personal/Birdwatching/best_shots/Marshlands_IMG_3831.JPG', species: 'Osprey', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/BlackandWhiteWarbler_JamaicaBayNY.JPG', species: 'Black-and-White Warbler', location: 'Jamaica Bay, New York' },
+            { src: 'Personal/Birdwatching/best_shots/EurasianCollaredDove_ChristChurchBarbados.JPG', species: 'Eurasian Collared Dove', location: 'Christ Church, Barbados' },
+            { src: 'Personal/Birdwatching/best_shots/MuteSwan_RyeNY.JPG', species: 'Mute Swan', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/Osprey_GreenwichCt.JPG', species: 'Osprey', location: 'Greenwich, Connecticut' },
+            { src: 'Personal/Birdwatching/best_shots/Sanderling_MonomoyNWR MA.JPG', species: 'Sanderling', location: 'Chatham, Massachusetts' },
+            { src: 'Personal/Birdwatching/best_shots/WildTurkey_RyeNY.JPG', species: 'Wild Turkey', location: 'Rye, New York' },
+            { src: 'Personal/Birdwatching/best_shots/YellowRumpedWarbler_RyeNY.JPG', species: 'Yellow-rumped Warbler', location: 'Rye, New York' }
+        ];
+
+        // Start on a random index
+        let currentHeroIndex = Math.floor(Math.random() * heroImages.length);
+        
+        const heroImgElement = document.getElementById('parallax-bg');
+        const speciesElement = document.getElementById('hero-species');
+        const locationElement = document.getElementById('hero-location');
+        const metaContainer = document.getElementById('hero-meta-container');
+
+        // Initial setup for random start
+        const initialImage = heroImages[currentHeroIndex];
+        heroImgElement.src = initialImage.src;
+        heroImgElement.style.objectPosition = initialImage.objectPosition || 'center';
+        speciesElement.textContent = initialImage.species;
+        locationElement.textContent = initialImage.location;
+
+        function cycleHero() {
+            // Sync fade out
+            heroImgElement.classList.add('fade-out');
+            metaContainer.classList.add('fade-out');
+
+            setTimeout(() => {
+                currentHeroIndex = (currentHeroIndex + 1) % heroImages.length;
+                const nextImage = heroImages[currentHeroIndex];
+
+                heroImgElement.src = nextImage.src;
+                heroImgElement.style.objectPosition = nextImage.objectPosition || 'center';
+                speciesElement.textContent = nextImage.species;
+                locationElement.textContent = nextImage.location;
+
+                // Sync fade in after load
+                heroImgElement.onload = () => {
+                    heroImgElement.classList.remove('fade-out');
+                    metaContainer.classList.remove('fade-out');
+                };
+            }, 1500); // Wait for 1.5s fade out to complete
+        }
+
+        // Cycle every 8 seconds
+        setInterval(cycleHero, 8000);
+
+        // --- Scroll Logic ---
+        const progressBar = document.getElementById('progress');
+        const parallaxBg = document.getElementById('parallax-bg');
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+
+            // Parallax
+            if (winScroll < window.innerHeight) {
+                parallaxBg.style.transform = `scale(1.1) translateY(${winScroll * 0.4}px)`;
+            }
+
+            // Nav
+            if (winScroll > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // --- Reveal Animations ---
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // observer.unobserve(entry.target); // Optional: animate only once
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // --- Smooth Interaction ---
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
 </html>
+
